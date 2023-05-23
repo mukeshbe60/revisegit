@@ -1,0 +1,36 @@
+import boto3
+import re
+
+# Set up S3 client
+s3 = boto3.client('s3')
+
+# Set up regular expression pattern to match folder names
+folder_pattern = r'^folder_\d{4}-\d{2}-\d{2}$'
+
+# List all objects in the S3 bucket
+response = s3.list_objects_v2(Bucket='my-bucket')
+
+# Iterate over each object and filter for folder names using the regular expression pattern
+for obj in response['Contents']:
+    if re.search(folder_pattern, obj['Key']):
+        print(obj['Key'])
+
+
+
+
+import boto3
+import re
+
+# Set up S3 client
+s3 = boto3.client('s3')
+
+# Set up regular expression pattern to match folder names
+folder_pattern = r'^folder_\d{4}-\d{2}-\d{2}$'
+
+# List all objects in the S3 bucket
+response = s3.list_objects_v2(Bucket='my-bucket')
+
+# Iterate over each object and filter for folder names using the regular expression pattern
+for obj in response['Contents']:
+    if re.search(folder_pattern, obj['Key']) and not re.search(r'pattern_to_exclude', obj['Key']):
+        print(obj['Key'])
