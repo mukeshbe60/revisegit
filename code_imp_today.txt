@@ -1,0 +1,53 @@
+def get_mxr_key_list(_bucket:str,prefix: str):
+	paginator = boto3.client("s3").get_paginator("list_objects")
+	folders = []
+	pattern = r'(?!.*UN_\d).*?$'
+	folders = list(filter(lambda f: re.match(pattern, f), folders))
+	iterator = paginator.paginate(
+		Bucket=_bucket,
+		Prefix=prefix,
+		Delimiter="/",
+		PaginationConfig={"PageSize":None},
+	)
+	for response_data in iterator:
+		prefixes = response_data.get("CommonPrefixes", [])
+		for p in prefixes:
+			key = p["Prefix"]
+			if ket.endswith("/"):
+				basemrf = bmk. split("=")[-1]
+				mrf_sizes ={
+					"basemrf":basemrf,,
+				}
+				folders.append(mrf_sizes)
+	return folders			
+	
+	mrf_dtl_list = get_mxr_key_list(s3_bck, mrf_key)
+	
+	
+	
+	============================
+	
+This is a Python code that uses the Boto3 library to interact with Amazon Web Services (AWS) S3 service.
+The code defines a function named get_mxr_key_list() that takes in two parameters:
+
+_bucket (string): The name of the S3 bucket to list keys from.
+prefix (string): An optional prefix to filter the keys in the bucket.
+Here's a brief overview of what the function does:
+
+The function creates a paginator object using the boto3.client().get_paginator() method, 
+which is used to paginate through the objects in the S3 bucket.
+An empty list named folders is created to store the metadata about the MRF files in the S3 bucket.
+The paginator.paginate() method is called to iterate over the objects in the bucket using the specified Bucket and
+
+ Prefix values. 
+ The Delimiter parameter is set to / to limit the keys to those with the same prefix. 
+ The PaginationConfig parameter is set to {"PageSize": None} to fetch all the keys in the bucket
+ without limiting the number of results per page.
+For each result page, the code loops through the CommonPrefixes list to get the prefixes in the bucket.
+For each prefix, the if condition checks if the prefix ends with a / character. If it does, 
+then the metadata about the MRF file is extracted from the prefix and stored in the mrf_sizes dictionary.
+ In this case, the basemrf value is extracted from the prefix by splitting it using the = 
+ character and getting the last item in the resulting list. The mrf_sizes dictionary is then appended to the folders list.
+The folders list is returned as the result of the function.
+Finally, the function is called with the specified S3 bucket and prefix to get the metadata about the MRF files. 
+The metadata is stored in the mrf_dtl_list variable.
